@@ -18,11 +18,9 @@ from .const import (
     CONF_PASSWORD,
     CONF_HOST,
     CONF_SCAN_INTERVAL,
-    CONF_POWER_RATING,
     CONF_SAVER_DURATION,
     DEFAULT_HOST,
     DEFAULT_SCAN_INTERVAL,
-    DEFAULT_POWER_RATING,
     DEFAULT_SAVER_DURATION,
 )
 from .coordinator import EssencyDataUpdateCoordinator
@@ -39,10 +37,6 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     scan_interval = entry.options.get(
         CONF_SCAN_INTERVAL,
         entry.data.get(CONF_SCAN_INTERVAL, DEFAULT_SCAN_INTERVAL),
-    )
-    power_rating = entry.options.get(
-        CONF_POWER_RATING,
-        entry.data.get(CONF_POWER_RATING, DEFAULT_POWER_RATING),
     )
     saver_duration = entry.options.get(
         CONF_SAVER_DURATION,
@@ -78,7 +72,6 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         device_id=device_id,
         device_info_dict=device,
         update_interval=timedelta(seconds=scan_interval),
-        power_rating_w=power_rating,
         water_saver_duration=saver_duration,
     )
 

@@ -2,7 +2,7 @@
 
 A custom HACS-compatible Home Assistant integration for **Essency EXR / E55R** smart on-demand electric tank water heaters.
 
-Communicates with Essency's cloud backend (ThingsBoard IoT) to provide full monitoring, controls, and **automatic energy (kWh) tracking for the Home Assistant Energy Dashboard**.
+Communicates with Essency's cloud backend (ThingsBoard IoT) to provide full monitoring and controls directly inside Home Assistant.
 
 ---
 
@@ -18,16 +18,11 @@ Communicates with Essency's cloud backend (ThingsBoard IoT) to provide full moni
 * **Away Mode:** Toggle vacation mode on/off directly from Home Assistant.
 * **Current Temperature / Availability:** Displays calculated hot water temperature based on remaining capacity.
 
-### ⚡ Energy & Power Tracking (Energy Dashboard Ready)
-* **Estimated Power (`sensor.*_estimated_power`):** Real-time power draw in Watts (`4500 W` when heating elements are active, `0 W` when idle).
-* **Estimated Energy Usage (`sensor.*_estimated_energy_usage`):** Continuous, persistent cumulative energy consumption in **kWh** (`total_increasing`). 
-  > **Note:** Automatically selectable in the **Home Assistant Energy Dashboard** under **Individual Devices**!
-
 ### 📊 Sensors & Metrics
 * **Hot Water Available (`%`):** Live tank hot water reservoir percentage (`0% – 100%`).
 * **Target Temperature:** Target setpoint in °F.
 * **Operating Mode:** Current mode (Standard, Boost, Water Saver, Vacation).
-* **Heat Source Status:** Diagnostic status indicating if heating elements are energized.
+* **Heat Source Status:** Diagnostic status indicating if Boost heating is actively engaged.
 * **Cycle Counters:** Lifetime counters for Boost, Vacation, and Saver activations.
 * **Device Network & Diagnostics:** Device local IP (e.g. `192.168.1.50`), Firmware version (`V-1-6-8`), Wi-Fi firmware (`WF-1-6-8`).
 
@@ -40,7 +35,7 @@ Communicates with Essency's cloud backend (ThingsBoard IoT) to provide full moni
 * **Water Saver Duration (`number.*_water_saver_duration`):** Slider entity to adjust the active duration (1 – 30 minutes) for Water Saver mode directly from your dashboards.
 
 ### 🔴 Binary Sensors
-* **Heating Active:** Engaged when heating elements are actively drawing power.
+* **Heating Active:** Engaged when Boost heating is active.
 * **Cloud Connection:** Monitors connectivity status to the cloud backend.
 * **Firmware Updating:** Alerts if an OTA update is running.
 
@@ -71,23 +66,17 @@ Communicates with Essency's cloud backend (ThingsBoard IoT) to provide full moni
 3. Enter your **MyEssency Account Email** and **Password**.
 4. *(Optional)* Configure:
    * **Update Interval:** Default is `30` seconds (10 – 300 seconds).
-   * **Heating Element Power:** Default is `4500` Watts (standard rating for Essency EXR 55-gallon dual element).
 5. Click **Submit**. Your water heater device, entities, and sensors will be automatically created.
 
 ### Reconfiguration & Options
 You can change integration options at any time without re-adding the device:
 1. Navigate to **Settings** -> **Devices & Services** -> **Essency Water Heater**.
 2. Click **Configure**.
-3. Adjust **Update Interval**, **Heating Element Power Rating**, or the default **Water Saver Duration**.
+3. Adjust **Update Interval** or the default **Water Saver Duration**.
 
 ---
 
-## Adding to Home Assistant Energy Dashboard
+## Energy Monitoring Note
 
-1. Navigate to **Settings** -> **Dashboards** -> **Energy**.
-2. Under **Individual devices**, click **Add Device**.
-3. Select **Estimated Energy Usage** (`sensor.essency_water_heater_estimated_energy_usage`).
-4. Click **Save**. 
-
-Your water heater's energy consumption will now appear alongside your household electricity and HVAC metrics!
+The Essency cloud backend and hardware do not expose revenue-grade power, current, or energy telemetry. To track actual electrical energy consumption in the Home Assistant Energy Dashboard accurately, use a dedicated 240V CT clamp energy monitor (such as a Shelly EM or Emporia Vue) installed at the breaker panel.
 

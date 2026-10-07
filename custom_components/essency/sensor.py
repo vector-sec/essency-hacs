@@ -12,13 +12,10 @@ from homeassistant.components.sensor import (
     SensorEntity,
     SensorEntityDescription,
     SensorStateClass,
-    RestoreSensor,
 )
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import (
     PERCENTAGE,
-    UnitOfEnergy,
-    UnitOfPower,
     UnitOfTemperature,
     EntityCategory,
 )
@@ -58,15 +55,6 @@ SENSOR_DESCRIPTIONS: tuple[EssencySensorEntityDescription, ...] = (
         value_fn=lambda data: data.get("attributes", {}).get("csoTempSetValue"),
     ),
     EssencySensorEntityDescription(
-        key="power",
-        name="Estimated Power",
-        icon="mdi:flash",
-        device_class=SensorDeviceClass.POWER,
-        native_unit_of_measurement=UnitOfPower.WATT,
-        state_class=SensorStateClass.MEASUREMENT,
-        value_fn=lambda data: data.get("power_w", 0.0),
-    ),
-    EssencySensorEntityDescription(
         key="heat_mode",
         name="Operating Mode",
         icon="mdi:tune-vertical",
@@ -79,7 +67,7 @@ SENSOR_DESCRIPTIONS: tuple[EssencySensorEntityDescription, ...] = (
         name="Heat Source Status",
         icon="mdi:radiator",
         entity_category=EntityCategory.DIAGNOSTIC,
-        value_fn=lambda data: "Heating (4.5 kW)" if data.get("is_heating") else "Idle",
+        value_fn=lambda data: "Boost Heating" if data.get("is_heating") else "Idle / Normal",
     ),
     EssencySensorEntityDescription(
         key="boost_counter",
@@ -152,9 +140,6 @@ async def async_setup_entry(
     entities: list[SensorEntity] = [
         EssencySensor(coordinator, desc) for desc in SENSOR_DESCRIPTIONS
     ]
-    # Add persistent Energy Meter sensor
-    entities.append(EssencyEnergySensor(coordinator))
-
     async_add_entities(entities)
 
 
@@ -184,38 +169,7 @@ class EssencySensor(EssencyEntity, SensorEntity):
             attrs = self.attributes
             return {
                 "is_heating": self.coordinator.data.get("is_heating", False),
-                "power_w": self.coordinator.data.get("power_w", 0.0),
                 "hot_water_level": attrs.get("csoHotWaterLevel"),
                 "hardware_heat_source_id": attrs.get("csoHeatSource", 0),
             }
         return None
-
-
-class EssencyEnergySensor(EssencyEntity, RestoreSensor):
-    """Cumulative Energy Usage Sensor for Home Assistant Energy Dashboard."""
-
-    _attr_name = "Estimated Energy Usage"
-    _attr_icon = "mdi:lightning-bolt-circle"
-    _attr_device_class = SensorDeviceClass.ENERGY
-    _attr_native_unit_of_measurement = UnitOfEnergy.KILO_WATT_HOUR
-    _attr_state_class = SensorStateClass.TOTAL_INCREASING
-
-    def __init__(self, coordinator: EssencyDataUpdateCoordinator) -> None:
-        """Initialize persistent energy sensor."""
-        super().__init__(coordinator, key="energy_usage_kwh")
-
-    async def async_added_to_hass(self) -> None:
-        """Restore previous cumulative state when Home Assistant starts."""
-        await super().async_added_to_hass()
-        last_state = await self.async_get_last_sensor_data()
-        if last_state and last_state.native_value is not None:
-            try:
-                prev_kwh = float(last_state.native_value)
-                self.coordinator.set_restored_energy(prev_kwh)
-            except (ValueError, TypeError):
-                pass
-
-    @property
-    def native_value(self) -> float | None:
-        """Return integrated cumulative energy in kWh."""
-        return self.coordinator.data.get("energy_kwh", 0.0)

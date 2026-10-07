@@ -13,11 +13,8 @@ CONF_USERNAME = "username"
 CONF_PASSWORD = "password"
 CONF_HOST = "host"
 CONF_SCAN_INTERVAL = "scan_interval"
-CONF_POWER_RATING = "power_rating"
 CONF_SAVER_DURATION = "saver_duration"
 
-# Rated power consumption of Essency EXR / E55R (Watts)
-DEFAULT_POWER_RATING = 4500
 # Default Water Saver duration (minutes)
 DEFAULT_SAVER_DURATION = 10
 

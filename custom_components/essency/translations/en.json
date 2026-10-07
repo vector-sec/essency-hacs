@@ -8,8 +8,7 @@
           "username": "Email Address",
           "password": "Password",
           "host": "Backend Server URL",
-          "scan_interval": "Update Interval (seconds)",
-          "power_rating": "Heating Element Power Rating (Watts)"
+          "scan_interval": "Update Interval (seconds)"
         }
       }
     },
@@ -29,7 +28,6 @@
         "title": "Essency Options",
         "data": {
           "scan_interval": "Update Interval (seconds)",
-          "power_rating": "Heating Element Power Rating (Watts)",
           "saver_duration": "Default Water Saver Duration (minutes)"
         }
       }

@@ -17,11 +17,9 @@ from .const import (
     CONF_PASSWORD,
     CONF_HOST,
     CONF_SCAN_INTERVAL,
-    CONF_POWER_RATING,
     CONF_SAVER_DURATION,
     DEFAULT_HOST,
     DEFAULT_SCAN_INTERVAL,
-    DEFAULT_POWER_RATING,
     DEFAULT_SAVER_DURATION,
 )
 
@@ -34,9 +32,6 @@ STEP_USER_DATA_SCHEMA = vol.Schema(
         vol.Optional(CONF_HOST, default=DEFAULT_HOST): str,
         vol.Optional(CONF_SCAN_INTERVAL, default=DEFAULT_SCAN_INTERVAL): vol.All(
             vol.Coerce(int), vol.Range(min=10, max=300)
-        ),
-        vol.Optional(CONF_POWER_RATING, default=DEFAULT_POWER_RATING): vol.All(
-            vol.Coerce(int), vol.Range(min=1000, max=10000)
         ),
     }
 )
@@ -130,13 +125,6 @@ class EssencyOptionsFlowHandler(config_entries.OptionsFlow):
                         self.config_entry.data.get(CONF_SCAN_INTERVAL, DEFAULT_SCAN_INTERVAL),
                     ),
                 ): vol.All(vol.Coerce(int), vol.Range(min=10, max=300)),
-                vol.Optional(
-                    CONF_POWER_RATING,
-                    default=self.config_entry.options.get(
-                        CONF_POWER_RATING,
-                        self.config_entry.data.get(CONF_POWER_RATING, DEFAULT_POWER_RATING),
-                    ),
-                ): vol.All(vol.Coerce(int), vol.Range(min=1000, max=10000)),
                 vol.Optional(
                     CONF_SAVER_DURATION,
                     default=self.config_entry.options.get(
