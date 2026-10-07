@@ -1,0 +1,16 @@
+{
+  "domain": "essency",
+  "name": "Essency Water Heater",
+  "codeowners": [
+    "@vector-sec"
+  ],
+  "config_flow": true,
+  "documentation": "https://github.com/vector-sec/essency-hacs",
+  "integration_type": "hub",
+  "iot_class": "cloud_polling",
+  "issue_tracker": "https://github.com/vector-sec/essency-hacs/issues",
+  "requirements": [
+    "requests>=2.28.0"
+  ],
+  "version": "1.0.0"
+}

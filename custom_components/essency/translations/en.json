@@ -1,0 +1,38 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Essency Water Heater Setup",
+        "description": "Enter your MyEssency account credentials to connect your water heater.",
+        "data": {
+          "username": "Email Address",
+          "password": "Password",
+          "host": "Backend Server URL",
+          "scan_interval": "Update Interval (seconds)",
+          "power_rating": "Heating Element Power Rating (Watts)"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Failed to connect to the Essency cloud server.",
+      "invalid_auth": "Invalid email or password.",
+      "no_devices_found": "No Essency water heater was found on this account.",
+      "unknown": "Unexpected error occurred."
+    },
+    "abort": {
+      "already_configured": "This Essency water heater is already configured."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Essency Options",
+        "data": {
+          "scan_interval": "Update Interval (seconds)",
+          "power_rating": "Heating Element Power Rating (Watts)",
+          "saver_duration": "Default Water Saver Duration (minutes)"
+        }
+      }
+    }
+  }
+}

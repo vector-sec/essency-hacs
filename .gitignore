@@ -1,0 +1,17 @@
+testing.md
+
+# Python bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+
+# macOS
+.DS_Store
+
+# Environments & Testing
+.pytest_cache/
+*.log
+
+# IDEs & Editors
+.vscode/
+.idea/
